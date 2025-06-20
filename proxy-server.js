@@ -1,9 +1,13 @@
 // CORS 프록시 서버 - eformsign API 브라우저 연동용
-const http = require('http');
-const https = require('https');
-const url = require('url');
+// 리팩토링된 버전은 src/server/index.js 를 사용하세요
+const { startServer } = require('./src/server');
 
-const PORT = 3000;
+console.log('⚠️  레거시 proxy-server.js 실행됨');
+console.log('💡 리팩토링된 버전: node src/server/index.js');
+console.log('🔄 리팩토링된 서버로 전환합니다...\n');
+
+// 리팩토링된 서버 시작
+startServer();
 
 // CORS 헤더 설정
 function setCORSHeaders(res) {

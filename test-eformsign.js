@@ -4,10 +4,10 @@ const https = require('https');
 class EformsignTester {
     constructor() {
         this.config = {
-            apiKey: 'd00ff6bb-6a84-4ed4-8b99-841f51743443',
-            bearerToken: 'myapitest2024',
-            memberId: 'hdh3296@gmail.com',
-            templateId: '023bd3b657cb4565b6f72e6fed2cbd8e'
+            apiKey: process.env.EFORMSIGN_API_KEY || 'd00ff6bb-6a84-4ed4-8b99-841f51743443',
+            bearerToken: process.env.EFORMSIGN_BEARER_TOKEN || 'myapitest2024',
+            memberId: process.env.EFORMSIGN_MEMBER_ID || 'hdh3296@gmail.com',
+            templateId: process.env.EFORMSIGN_TEMPLATE_ID || '023bd3b657cb4565b6f72e6fed2cbd8e'
         };
         this.accessToken = '';
         this.apiUrl = '';

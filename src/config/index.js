@@ -12,15 +12,15 @@ const config = {
     
     // 인증 정보 (환경변수에서 우선 가져오기)
     credentials: {
-      apiKey: process.env.EFORMSIGN_API_KEY || 'd00ff6bb-6a84-4ed4-8b99-841f51743443',
-      bearerToken: process.env.EFORMSIGN_BEARER_TOKEN || 'myapitest2024',
-      memberId: process.env.EFORMSIGN_MEMBER_ID || 'hdh3296@gmail.com',
-      companyId: process.env.EFORMSIGN_COMPANY_ID || 'b30ab2123ecf463aa54b30bf0c0a34a3'
+      apiKey: process.env.EFORMSIGN_API_KEY || 'your_api_key_here',
+      bearerToken: process.env.EFORMSIGN_BEARER_TOKEN || 'your_bearer_token_here',
+      memberId: process.env.EFORMSIGN_MEMBER_ID || 'your_email@example.com',
+      companyId: process.env.EFORMSIGN_COMPANY_ID || 'your_company_id_here'
     },
     
     // 템플릿 설정
     templates: {
-      pestControl: process.env.EFORMSIGN_TEMPLATE_ID || '023bd3b657cb4565b6f72e6fed2cbd8e'
+      pestControl: process.env.EFORMSIGN_TEMPLATE_ID || 'your_template_id_here'
     },
     
     // 문서 기본 설정

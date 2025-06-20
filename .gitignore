@@ -32,3 +32,5 @@ build/
 
 # Security sensitive files
 docs/info.md
+*.log
+server.log

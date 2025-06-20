@@ -49,12 +49,12 @@ pest-control-nextjs/
 
 ### .env.local 파일 생성
 ```bash
-# eformsign API 설정
-EFORMSIGN_API_KEY=d00ff6bb-6a84-4ed4-8b99-841f51743443
-EFORMSIGN_BEARER_TOKEN=myapitest2024
-EFORMSIGN_MEMBER_ID=hdh3296@gmail.com
-EFORMSIGN_COMPANY_ID=b30ab2123ecf463aa54b30bf0c0a34a3
-EFORMSIGN_TEMPLATE_ID=023bd3b657cb4565b6f72e6fed2cbd8e
+# eformsign API 설정 (실제 값으로 교체하세요)
+EFORMSIGN_API_KEY=your_api_key_here
+EFORMSIGN_BEARER_TOKEN=your_bearer_token_here
+EFORMSIGN_MEMBER_ID=your_email@example.com
+EFORMSIGN_COMPANY_ID=your_company_id_here
+EFORMSIGN_TEMPLATE_ID=your_template_id_here
 
 # Next.js 설정
 NODE_ENV=development

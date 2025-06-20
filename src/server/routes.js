@@ -68,8 +68,16 @@ function mapApiUrl(requestUrl, requestBody) {
   let cleanBody = requestBody;
   
   if (requestUrl === '/api/access_token') {
-    // 토큰 발급 엔드포인트
+    // 토큰 발급 엔드포인트 - 환경변수 정보 자동 추가
     targetUrl = `${config.eformsign.baseUrl}/${config.eformsign.version}/api_auth/access_token`;
+    
+    // 서버에서 환경변수를 사용하여 요청 본문 구성
+    const requestData = JSON.parse(requestBody || '{}');
+    const serverRequestData = {
+      execution_time: requestData.execution_time || Date.now(),
+      member_id: config.eformsign.credentials.memberId
+    };
+    cleanBody = JSON.stringify(serverRequestData);
   } 
   else if (requestUrl.startsWith('/api/documents')) {
     // 문서 생성 엔드포인트
@@ -97,6 +105,23 @@ function mapApiUrl(requestUrl, requestBody) {
   }
   
   return { targetUrl, cleanBody };
+}
+
+/**
+ * 환경변수 기반 헤더 생성
+ */
+function createAuthHeaders(requestUrl) {
+  const headers = {};
+  
+  if (requestUrl === '/api/access_token') {
+    // 토큰 발급용 헤더
+    const base64ApiKey = Buffer.from(config.eformsign.credentials.apiKey).toString('base64');
+    headers['eformsign_signature'] = `Bearer ${config.eformsign.credentials.bearerToken}`;
+    headers['Authorization'] = `Bearer ${base64ApiKey}`;
+    headers['Content-Type'] = 'application/json';
+  }
+  
+  return headers;
 }
 
 /**
@@ -199,8 +224,15 @@ async function handleApiProxy(req, res) {
         // URL 매핑 및 데이터 정제
         const { targetUrl, cleanBody } = mapApiUrl(req.url, body);
         
-        // 헤더 필터링
-        const proxyHeaders = filterProxyHeaders(req.headers);
+        // 환경변수 기반 인증 헤더 생성 또는 클라이언트 헤더 사용
+        let proxyHeaders;
+        if (req.url === '/api/access_token') {
+          // 토큰 요청은 서버의 환경변수 사용
+          proxyHeaders = createAuthHeaders(req.url);
+        } else {
+          // 문서 생성은 클라이언트 헤더 사용 (Authorization Bearer 토큰)
+          proxyHeaders = filterProxyHeaders(req.headers);
+        }
         
         const options = {
           method: req.method,
@@ -312,6 +344,7 @@ if (typeof module !== 'undefined' && module.exports) {
     handleOptionsRequest,
     handleStaticFiles,
     mapApiUrl,
+    createAuthHeaders,
     filterProxyHeaders,
     createProxyRequest,
     handleApiProxy,

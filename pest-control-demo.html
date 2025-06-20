@@ -262,6 +262,102 @@
                 }
             }
             
+            // 서버의 환경변수를 사용한 토큰 발급
+            async getAccessTokenFromServer() {
+                try {
+                    const response = await fetch('/api/access_token', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            execution_time: Date.now()
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`토큰 발급 실패: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    this.accessToken = data.oauth_token.access_token;
+                    this.apiUrl = data.api_key.company.api_url;
+                    
+                    return data;
+                } catch (error) {
+                    console.error('토큰 발급 에러:', error);
+                    throw error;
+                }
+            }
+            
+            // 서버의 환경변수를 사용한 문서 생성
+            async createAndSendDocumentFromServer(customerName, phoneNumber, contractDetails) {
+                try {
+                    if (!this.accessToken) {
+                        throw new Error('Access Token이 없습니다.');
+                    }
+                    
+                    const response = await fetch('/api/documents', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${this.accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            apiUrl: this.apiUrl,
+                            document: {
+                                document_name: `방역 계약서 - ${customerName}`,
+                                comment: `${customerName}님의 방역 서비스 계약서입니다. ${contractDetails}`,
+                                recipients: [
+                                    {
+                                        step_type: "05",
+                                        use_mail: false,
+                                        use_sms: true,
+                                        member: {
+                                            name: customerName,
+                                            id: "contract@pestcontrol.com",
+                                            sms: {
+                                                country_code: "+82",
+                                                phone_number: phoneNumber.replace(/-/g, '')
+                                            }
+                                        },
+                                        auth: {
+                                            password: "1234",
+                                            password_hint: "기본 비밀번호: 1234",
+                                            valid: {
+                                                day: 7,
+                                                hour: 0
+                                            }
+                                        }
+                                    }
+                                ],
+                                fields: [
+                                    {
+                                        id: "회원구분",
+                                        value: "일반"
+                                    }
+                                ],
+                                select_group_name: "",
+                                notification: []
+                            }
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(`문서 발송 실패: ${errorData.ErrorMessage || response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    console.log('문서 발송 성공:', data);
+                    
+                    return data;
+                } catch (error) {
+                    console.error('문서 발송 에러:', error);
+                    throw error;
+                }
+            }
+            
             // 문서 생성 및 SMS 발송
             async createAndSendDocument(templateId, customerName, phoneNumber, contractDetails) {
                 try {
@@ -359,29 +455,23 @@
                 const phoneNumber = document.getElementById('phoneNumber').value;
                 const contractDetails = document.getElementById('contractDetails').value || '방역 서비스';
                 
-                // API 설정값 가져오기
-                const apiKey = document.getElementById('apiKey').value;
-                const bearerToken = document.getElementById('bearerToken').value;
-                const memberId = document.getElementById('memberId').value;
-                const templateId = document.getElementById('templateId').value;
-                
                 // 유효성 검사
                 if (!customerName || !phoneNumber) {
                     throw new Error('고객명과 휴대폰번호는 필수입니다.');
                 }
                 
-                if (!apiKey || !bearerToken || !memberId || !templateId) {
-                    throw new Error('API 설정값들을 모두 입력해주세요.');
-                }
+                // 프록시 서버를 통한 API 호출 (설정값은 서버에서 관리)
+                console.log('서버의 환경변수를 사용하여 API 호출합니다.');
                 
                 // eformsign API 실행
                 const api = new EformsignAPI();
                 
                 console.log('1. Access Token 발급 중...');
-                await api.getAccessToken(apiKey, bearerToken, memberId);
+                // 프록시 서버를 통해 토큰 발급 (서버에서 환경변수 사용)
+                await api.getAccessTokenFromServer();
                 
                 console.log('2. 계약서 생성 및 발송 중...');
-                const response = await api.createAndSendDocument(templateId, customerName, phoneNumber, contractDetails);
+                const response = await api.createAndSendDocumentFromServer(customerName, phoneNumber, contractDetails);
                 
                 console.log('3. 발송 완료!', response);
                 

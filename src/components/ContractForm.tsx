@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { sendContract } from '@/lib/eformsign';
 import { formatPhoneNumber, validateForm, FormData, FormState, initialFormState, createLoadingState, createSuccessState, createErrorState } from '@/lib/utils';
-import { useRemainingDocs } from '@/hooks/useRemainingDocs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,7 +17,8 @@ export default function ContractForm() {
   });
   
   const [formState, setFormState] = useState<FormState>(initialFormState);
-  const { remainingDocs, setRemainingDocs, decrementRemainingDocs } = useRemainingDocs(50);
+  const [remainingDocs, setRemainingDocs] = useState<number | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,8 +38,8 @@ export default function ContractForm() {
       if (response.success && response.document) {
         setFormState(createSuccessState());
         
-        // 성공 시 발송 건수 차감
-        decrementRemainingDocs();
+        // 성공 시 DemoInfo 새로고침 트리거 (실제 서버 데이터 조회)
+        setRefreshTrigger(prev => prev + 1);
         
         // 성공 시 폼 초기화
         setFormData({
@@ -66,7 +66,7 @@ export default function ContractForm() {
   return (
     <div className="max-w-md mx-auto space-y-6">
       {/* 데모 정보 표시 */}
-      <DemoInfo onRemainingUpdate={setRemainingDocs} />
+      <DemoInfo onRemainingUpdate={setRemainingDocs} refreshTrigger={refreshTrigger} />
       
       {/* 계약서 발송 폼 */}
       <Card className="shadow-lg border-0 bg-white">

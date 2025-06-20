@@ -8,9 +8,10 @@ import { Clock, FileText, AlertTriangle } from 'lucide-react';
 
 interface DemoInfoProps {
   onRemainingUpdate?: (remaining: number) => void;
+  refreshTrigger?: number; // 외부에서 새로고침을 트리거하기 위한 prop
 }
 
-export default function DemoInfo({ onRemainingUpdate }: DemoInfoProps) {
+export default function DemoInfo({ onRemainingUpdate, refreshTrigger }: DemoInfoProps) {
   const [remainingDocs, setRemainingDocs] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -55,6 +56,13 @@ export default function DemoInfo({ onRemainingUpdate }: DemoInfoProps) {
   useEffect(() => {
     fetchUsageStatus();
   }, [fetchUsageStatus]);
+
+  // refreshTrigger가 변경될 때마다 새로고침
+  useEffect(() => {
+    if (refreshTrigger !== undefined && refreshTrigger > 0) {
+      fetchUsageStatus();
+    }
+  }, [refreshTrigger, fetchUsageStatus]);
 
   // 남은 일수 계산
   const calculateDaysRemaining = () => {

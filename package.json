@@ -8,7 +8,15 @@
     "dev": "node proxy-server.js",
     "test": "node test-eformsign.js"
   },
-  "keywords": ["eformsign", "pest-control", "contract", "sms"],
+  "keywords": [
+    "eformsign",
+    "pest-control",
+    "contract",
+    "sms"
+  ],
   "author": "AI Assistant",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.5.0"
+  }
 }

@@ -17,7 +17,8 @@
       "Bash(git rm:*)",
       "Bash(grep:*)",
       "Bash(rm:*)",
-      "Bash(PORT=3000 node src/server/index.js)"
+      "Bash(PORT=3000 node src/server/index.js)",
+      "Bash(npm install:*)"
     ],
     "deny": []
   }

@@ -3,6 +3,20 @@
  * Next.js 환경변수로 쉽게 전환할 수 있도록 구성
  */
 
+// 환경변수 로드
+try {
+  require('dotenv').config({ path: '.env.local' });
+  console.log('✅ dotenv loaded from .env.local');
+} catch (error) {
+  console.log('❌ dotenv load failed:', error.message);
+}
+
+// 환경변수 디버깅
+console.log('🔍 Environment Variables:');
+console.log('EFORMSIGN_API_KEY:', process.env.EFORMSIGN_API_KEY ? '***loaded***' : 'NOT FOUND');
+console.log('EFORMSIGN_BEARER_TOKEN:', process.env.EFORMSIGN_BEARER_TOKEN ? '***loaded***' : 'NOT FOUND');
+console.log('EFORMSIGN_MEMBER_ID:', process.env.EFORMSIGN_MEMBER_ID ? '***loaded***' : 'NOT FOUND');
+
 const config = {
   // eformsign API 설정
   eformsign: {

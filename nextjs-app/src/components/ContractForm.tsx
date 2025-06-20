@@ -55,15 +55,15 @@ export default function ContractForm() {
   };
 
   return (
-    <Card className="max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>🐛 방역 계약서 발송 시스템</CardTitle>
-        <CardDescription>
-          고객 정보를 입력하여 휴대폰으로 계약서를 발송합니다
+    <Card className="max-w-md mx-auto shadow-lg border-0 bg-white">
+      <CardHeader className="bg-slate-800 text-white rounded-t-lg">
+        <CardTitle className="text-center text-lg font-semibold">🛡️ 방역 서비스 계약</CardTitle>
+        <CardDescription className="text-center text-slate-200">
+          고객 정보를 입력하시면 디지털 계약서가 즉시 발송됩니다
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <CardContent className="p-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="customerName" className="block text-sm font-medium text-gray-700 mb-1">
               고객명 *
@@ -74,6 +74,7 @@ export default function ContractForm() {
               value={formData.customerName}
               onChange={(e) => setFormData(prev => ({ ...prev, customerName: e.target.value }))}
               placeholder="고객명을 입력하세요"
+              className="text-gray-900 placeholder:text-gray-400"
               required
               disabled={formState.isLoading}
             />
@@ -89,6 +90,7 @@ export default function ContractForm() {
               value={formData.phoneNumber}
               onChange={handlePhoneInput}
               placeholder="010-0000-0000"
+              className="text-gray-900 placeholder:text-gray-400"
               required
               disabled={formState.isLoading}
             />
@@ -102,7 +104,7 @@ export default function ContractForm() {
               id="contractDetails"
               value={formData.contractDetails}
               onChange={(e) => setFormData(prev => ({ ...prev, contractDetails: e.target.value }))}
-              className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               rows={3}
               placeholder="계약 내용을 간단히 입력하세요"
               required
@@ -113,9 +115,9 @@ export default function ContractForm() {
           <Button
             type="submit"
             disabled={formState.isLoading}
-            className="w-full"
+            className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-md transition-colors"
           >
-            {formState.isLoading ? '발송 중...' : '📄 계약서 발송하기'}
+            {formState.isLoading ? '📤 발송 중...' : '📄 계약서 발송하기'}
           </Button>
 
           {/* 결과 표시 */}

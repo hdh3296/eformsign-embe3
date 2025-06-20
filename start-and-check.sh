@@ -30,14 +30,15 @@ if [ ! -z "$EXISTING_PID" ]; then
     log_success "기존 프로세스 종료 완료"
 fi
 
-# 2. 포트 확인
+# 2. 포트 3000 강제 사용
+PORT=3000
 if lsof -Pi :3000 -sTCP:LISTEN -t >/dev/null 2>&1; then
-    PORT=3001
-    log_info "포트 3000 사용 중 → 포트 3001 사용"
-else
-    PORT=3000
-    log_info "포트 3000 사용 가능"
+    log_info "포트 3000 사용 중인 프로세스 종료 중..."
+    lsof -ti:3000 | xargs kill -9 2>/dev/null || true
+    sleep 2
+    log_success "포트 3000 정리 완료"
 fi
+log_info "포트 3000 사용 설정"
 
 # 3. 서버 시작
 log_info "Next.js 서버를 포트 $PORT에서 시작합니다..."

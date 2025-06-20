@@ -58,3 +58,5 @@ Thumbs.db
 
 # Security sensitive files (project specific)
 docs/info.md
+.vercel
+.claude/settings.local.json

@@ -9,9 +9,6 @@ export default function HomePage() {
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
             🏢 {config.app.name}
           </h1>
-          <p className="text-gray-600 text-xl mb-2">
-            디지털 계약서 발송 시스템
-          </p>
           <p className="text-gray-500 text-sm">
             고객 정보를 입력하면 휴대폰으로 계약서가 즉시 발송됩니다
           </p>

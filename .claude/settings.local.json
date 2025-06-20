@@ -34,7 +34,12 @@
       "mcp__chroma-knowledge-base__chroma_add_documents",
       "mcp___21st-dev_magic__21st_magic_component_builder",
       "Bash(mv:*)",
-      "Bash(true)"
+      "Bash(true)",
+      "Bash(git reset:*)",
+      "Bash(find:*)",
+      "Bash(vercel:*)",
+      "mcp__ripgrep__search",
+      "WebFetch(domain:app.swaggerhub.com)"
     ],
     "deny": []
   }

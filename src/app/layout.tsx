@@ -7,8 +7,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: config.app.name,
-  description: '방역업체를 위한 현장 계약서 발송 시스템',
-  keywords: ['방역', '계약서', 'eformsign', 'SMS', '전자서명'],
+  description: '디지털 계약서 발송 시스템',
+  keywords: ['디지털', '계약서', 'eformsign', 'SMS', '전자서명'],
 };
 
 export default function RootLayout({

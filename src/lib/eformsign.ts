@@ -124,6 +124,94 @@ export async function sendContract(data: DocumentRequest): Promise<ContractResul
 }
 
 /**
+ * 이용현황 조회 API
+ */
+export async function getUsageStatus(): Promise<any> {
+  try {
+    // 먼저 액세스 토큰 발급
+    const tokenData = await getAccessToken();
+    const accessToken = tokenData.oauth_token.access_token;
+    const apiUrl = tokenData.api_key.company.api_url;
+    
+    const response = await fetch(`${apiUrl}/v2.0/api/companies/${config.eformsign.credentials.companyId}/use_status`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error');
+      throw new EformsignAPIError(
+        `이용현황 조회 실패: ${response.status}`,
+        response.status,
+        errorText
+      );
+    }
+    
+    const usageData = await response.json();
+    return {
+      success: true,
+      data: usageData
+    };
+    
+  } catch (error) {
+    console.error('이용현황 조회 에러:', error);
+    return {
+      success: false,
+      error: {
+        message: error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다'
+      }
+    };
+  }
+}
+
+/**
+ * 회사 정보 조회 API (플랜 정보 포함 가능성)
+ */
+export async function getCompanyInfo(): Promise<any> {
+  try {
+    // 먼저 액세스 토큰 발급
+    const tokenData = await getAccessToken();
+    const accessToken = tokenData.oauth_token.access_token;
+    const apiUrl = tokenData.api_key.company.api_url;
+    
+    const response = await fetch(`${apiUrl}/v2.0/api/companies/${config.eformsign.credentials.companyId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error');
+      throw new EformsignAPIError(
+        `회사 정보 조회 실패: ${response.status}`,
+        response.status,
+        errorText
+      );
+    }
+    
+    const companyData = await response.json();
+    return {
+      success: true,
+      data: companyData
+    };
+    
+  } catch (error) {
+    console.error('회사 정보 조회 에러:', error);
+    return {
+      success: false,
+      error: {
+        message: error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다'
+      }
+    };
+  }
+}
+
+/**
  * 서버사이드에서 직접 eformsign API 호출 (토큰 발급)
  */
 export async function getAccessToken(): Promise<TokenResponse> {
@@ -166,8 +254,8 @@ export async function createAndSendDocument(
 ): Promise<DocumentResponse> {
   const documentData = {
     document: {
-      document_name: `방역 계약서 - ${data.customerName}`,
-      comment: `${data.customerName}님의 방역 서비스 계약서입니다. ${data.contractDetails}`,
+      document_name: `디지털 계약서 - ${data.customerName}`,
+      comment: `${data.customerName}님의 온라인 계약서입니다. ${data.contractDetails}`,
       recipients: [
         {
           step_type: "05",

@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { sendContract } from '@/lib/eformsign';
 import { formatPhoneNumber, validateForm, FormData, FormState, initialFormState, createLoadingState, createSuccessState, createErrorState } from '@/lib/utils';
+import { useRemainingDocs } from '@/hooks/useRemainingDocs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import DemoInfo from '@/components/DemoInfo';
 
 export default function ContractForm() {
   const [formData, setFormData] = useState<FormData>({
@@ -16,6 +18,7 @@ export default function ContractForm() {
   });
   
   const [formState, setFormState] = useState<FormState>(initialFormState);
+  const { remainingDocs, setRemainingDocs, decrementRemainingDocs } = useRemainingDocs(50);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +37,9 @@ export default function ContractForm() {
       
       if (response.success && response.document) {
         setFormState(createSuccessState());
+        
+        // 성공 시 발송 건수 차감
+        decrementRemainingDocs();
         
         // 성공 시 폼 초기화
         setFormData({
@@ -54,10 +60,18 @@ export default function ContractForm() {
     setFormData(prev => ({ ...prev, phoneNumber: formatted }));
   };
 
+  // 발송 가능 여부 체크
+  const canSend = remainingDocs === null || remainingDocs > 0;
+
   return (
-    <Card className="max-w-md mx-auto shadow-lg border-0 bg-white">
+    <div className="max-w-md mx-auto space-y-6">
+      {/* 데모 정보 표시 */}
+      <DemoInfo onRemainingUpdate={setRemainingDocs} />
+      
+      {/* 계약서 발송 폼 */}
+      <Card className="shadow-lg border-0 bg-white">
       <CardHeader className="bg-slate-800 text-white rounded-t-lg">
-        <CardTitle className="text-center text-lg font-semibold">🛡️ 방역 서비스 계약</CardTitle>
+        <CardTitle className="text-center text-lg font-semibold">🛡️ 디지털 계약서 발송</CardTitle>
         <CardDescription className="text-center text-slate-200">
           고객 정보를 입력하시면 디지털 계약서가 즉시 발송됩니다
         </CardDescription>
@@ -114,11 +128,31 @@ export default function ContractForm() {
 
           <Button
             type="submit"
-            disabled={formState.isLoading}
-            className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-md transition-colors"
+            disabled={formState.isLoading || !canSend}
+            className={`w-full font-semibold py-3 rounded-md transition-colors ${
+              !canSend 
+                ? 'bg-gray-400 cursor-not-allowed' 
+                : 'bg-slate-800 hover:bg-slate-700 text-white'
+            }`}
           >
-            {formState.isLoading ? '📤 발송 중...' : '📄 계약서 발송하기'}
+            {formState.isLoading 
+              ? '📤 발송 중...' 
+              : !canSend 
+                ? '📄 발송 한도 초과' 
+                : '📄 계약서 발송하기'
+            }
           </Button>
+
+          {!canSend && remainingDocs === 0 && (
+            <Alert className="border-orange-500 bg-orange-50">
+              <AlertDescription className="text-orange-800">
+                <strong>⚠️ 발송 한도 초과</strong>
+                <div className="mt-1">
+                  무료체험 발송 한도를 모두 사용했습니다.
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
 
           {/* 결과 표시 */}
           {formState.isSuccess && (
@@ -144,5 +178,6 @@ export default function ContractForm() {
         </form>
       </CardContent>
     </Card>
+    </div>
   );
 }

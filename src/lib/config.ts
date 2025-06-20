@@ -48,8 +48,8 @@ export interface AppConfig {
 const config = {
   // 앱 기본 설정
   app: {
-    name: process.env.NEXT_PUBLIC_APP_NAME || '방역 계약서 발송 시스템',
-    version: process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0',
+    name: '디지털 계약서 발송 시스템',
+    version: '1.0.0',
     environment: process.env.NODE_ENV || 'development'
   } as AppConfig,
 

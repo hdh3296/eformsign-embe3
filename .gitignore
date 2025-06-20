@@ -33,4 +33,7 @@ build/
 # Security sensitive files
 docs/info.md
 *.log
-server.log
+server.log.next/
+node_modules/
+*.log
+.env.local

@@ -17,6 +17,10 @@
   "author": "AI Assistant",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^16.5.0"
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "dotenv": "^16.5.0",
+    "lucide-react": "^0.518.0",
+    "tailwind-merge": "^3.3.1"
   }
 }

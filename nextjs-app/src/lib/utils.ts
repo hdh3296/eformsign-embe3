@@ -3,6 +3,9 @@
  * React에서 사용할 수 있도록 TypeScript로 변환
  */
 
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
 export interface FormData {
   customerName: string;
   phoneNumber: string;
@@ -156,10 +159,10 @@ export function createErrorState(message: string): FormState {
 }
 
 /**
- * CSS 클래스 조건부 결합
+ * CSS 클래스 조건부 결합 (shadcn/ui 호환)
  */
-export function cn(...classes: (string | undefined | false)[]): string {
-  return classes.filter(Boolean).join(' ');
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
 
 /**

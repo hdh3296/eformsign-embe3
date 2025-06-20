@@ -22,7 +22,14 @@
       "Bash(mkdir:*)",
       "Bash(npx create-next-app:*)",
       "Bash(npm run dev:*)",
-      "Bash(kill:*)"
+      "Bash(kill:*)",
+      "Bash(npx:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run:*)",
+      "Bash(./start-server.sh:*)",
+      "Bash(./smart-server.sh)",
+      "Bash(./server-with-logs.sh:*)",
+      "Bash(./start-and-check.sh:*)"
     ],
     "deny": []
   }

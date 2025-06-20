@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:manual-kr.eformsign.com)",
+      "Bash(ls:*)",
+      "Bash(node:*)",
+      "Bash(nslookup:*)",
+      "Bash(open pest-control-demo.html)",
+      "Bash(curl:*)",
+      "Bash(npm start)",
+      "Bash(chmod:*)",
+      "Bash(./start-demo.sh:*)",
+      "Bash(pkill:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}

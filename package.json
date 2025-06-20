@@ -1,0 +1,14 @@
+{
+  "name": "eformsign-pest-control-demo",
+  "version": "1.0.0",
+  "description": "방역 계약서 발송 시스템 - 브라우저 데모용",
+  "main": "proxy-server.js",
+  "scripts": {
+    "start": "node proxy-server.js",
+    "dev": "node proxy-server.js",
+    "test": "node test-eformsign.js"
+  },
+  "keywords": ["eformsign", "pest-control", "contract", "sms"],
+  "author": "AI Assistant",
+  "license": "MIT"
+}

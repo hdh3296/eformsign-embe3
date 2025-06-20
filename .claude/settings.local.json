@@ -29,7 +29,12 @@
       "Bash(./start-server.sh:*)",
       "Bash(./smart-server.sh)",
       "Bash(./server-with-logs.sh:*)",
-      "Bash(./start-and-check.sh:*)"
+      "Bash(./start-and-check.sh:*)",
+      "mcp__chroma-knowledge-base__chroma_list_collections",
+      "mcp__chroma-knowledge-base__chroma_add_documents",
+      "mcp___21st-dev_magic__21st_magic_component_builder",
+      "Bash(mv:*)",
+      "Bash(true)"
     ],
     "deny": []
   }

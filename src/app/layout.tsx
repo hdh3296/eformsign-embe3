@@ -18,11 +18,11 @@ export const metadata: Metadata = {
     siteName: config.app.name,
     images: [
       {
-        url: '/og-image.png',
-        width: 1024,
+        url: '/og-image.jpg',
+        width: 1536,
         height: 1024,
         alt: 'eformsign 디지털 계약서 발송 시스템 - Digital Contract System',
-        type: 'image/png',
+        type: 'image/jpeg',
       }
     ],
   },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'eformsign 디지털 계약서 발송 시스템',
     description: '간편하고 안전한 디지털 계약서 자동 발송 서비스',
-    images: ['/og-image.png'],
+    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
@@ -42,6 +42,14 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+  },
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
 };
 

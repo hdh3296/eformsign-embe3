@@ -39,7 +39,11 @@
       "Bash(find:*)",
       "Bash(vercel:*)",
       "mcp__ripgrep__search",
-      "WebFetch(domain:app.swaggerhub.com)"
+      "WebFetch(domain:app.swaggerhub.com)",
+      "Bash(gh repo create:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }

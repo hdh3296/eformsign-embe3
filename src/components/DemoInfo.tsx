@@ -28,12 +28,19 @@ export default function DemoInfo({ onRemainingUpdate, refreshTrigger }: DemoInfo
       setLoading(true);
       setError(null);
       
+      console.log('🔍 DemoInfo: API 호출 시작 - /api/usage');
+      
       const response = await fetch('/api/usage');
+      console.log('🔍 DemoInfo: API 응답 상태:', response.status, response.statusText);
+      
       const data = await response.json();
+      console.log('🔍 DemoInfo: API 응답 데이터:', data);
       
       if (data.success && data.usage) {
         const currentUsage = data.usage.total || 0;
         const remaining = demoInfo.totalAllowed - currentUsage;
+        console.log(`🔍 DemoInfo: 계산된 남은 건수 - 총허용: ${demoInfo.totalAllowed}, 현재사용: ${currentUsage}, 남은건수: ${remaining}`);
+        
         setRemainingDocs(Math.max(0, remaining));
         
         // 부모 컴포넌트에 남은 건수 전달
@@ -41,13 +48,15 @@ export default function DemoInfo({ onRemainingUpdate, refreshTrigger }: DemoInfo
           onRemainingUpdate(remaining);
         }
       } else {
+        console.error('🔍 DemoInfo: API 호출 실패 - data:', data);
         throw new Error(data.error?.message || '이용현황 조회 실패');
       }
     } catch (err) {
-      console.error('이용현황 조회 에러:', err);
+      console.error('🔍 DemoInfo: 이용현황 조회 에러:', err);
       setError(err instanceof Error ? err.message : '알 수 없는 오류');
       // 에러 시 기본값 설정
       setRemainingDocs(36);
+      console.log('🔍 DemoInfo: 에러로 인해 기본값 36 설정');
     } finally {
       setLoading(false);
     }

@@ -168,6 +168,100 @@ export async function getUsageStatus(): Promise<any> {
 }
 
 /**
+ * 템플릿 목록 조회
+ */
+export async function getTemplateList(): Promise<any> {
+  try {
+    console.log('템플릿 목록 조회 API 호출 시작');
+    
+    const tokenData = await getAccessToken();
+    const accessToken = tokenData.oauth_token.access_token;
+    const apiUrl = tokenData.api_key.company.api_url;
+    
+    const response = await fetch(
+      `${apiUrl}/v2.0/api/companies/${config.eformsign.credentials.companyId}/forms`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error(
+        `템플릿 목록 조회 실패: ${response.status} ${response.statusText}`
+      );
+    }
+    
+    const templateData = await response.json();
+    console.log('템플릿 목록 조회 성공:', templateData);
+    
+    return {
+      success: true,
+      data: templateData
+    };
+    
+  } catch (error) {
+    console.error('템플릿 목록 조회 에러:', error);
+    return {
+      success: false,
+      error: {
+        message: error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다'
+      }
+    };
+  }
+}
+
+/**
+ * 특정 템플릿 정보 조회
+ */
+export async function getTemplateInfo(templateId: string): Promise<any> {
+  try {
+    console.log('템플릿 정보 조회 API 호출 시작:', templateId);
+    
+    const tokenData = await getAccessToken();
+    const accessToken = tokenData.oauth_token.access_token;
+    const apiUrl = tokenData.api_key.company.api_url;
+    
+    const response = await fetch(
+      `${apiUrl}/v2.0/api/companies/${config.eformsign.credentials.companyId}/forms/${templateId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error(
+        `템플릿 정보 조회 실패: ${response.status} ${response.statusText}`
+      );
+    }
+    
+    const templateInfo = await response.json();
+    console.log('템플릿 정보 조회 성공:', templateInfo);
+    
+    return {
+      success: true,
+      data: templateInfo
+    };
+    
+  } catch (error) {
+    console.error('템플릿 정보 조회 에러:', error);
+    return {
+      success: false,
+      error: {
+        message: error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다'
+      }
+    };
+  }
+}
+
+/**
  * 회사 정보 조회 API (플랜 정보 포함 가능성)
  */
 export async function getCompanyInfo(): Promise<any> {

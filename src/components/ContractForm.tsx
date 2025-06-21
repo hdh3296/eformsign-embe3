@@ -19,6 +19,7 @@ export default function ContractForm() {
   const [formState, setFormState] = useState<FormState>(initialFormState);
   const [remainingDocs, setRemainingDocs] = useState<number | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [currentTemplate, setCurrentTemplate] = useState<string>('디지털 계약서');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,12 +67,16 @@ export default function ContractForm() {
   return (
     <div className="max-w-md mx-auto space-y-6">
       {/* 데모 정보 표시 */}
-      <DemoInfo onRemainingUpdate={setRemainingDocs} refreshTrigger={refreshTrigger} />
+      <DemoInfo 
+        onRemainingUpdate={setRemainingDocs} 
+        onTemplateUpdate={setCurrentTemplate}
+        refreshTrigger={refreshTrigger} 
+      />
       
       {/* 계약서 발송 폼 */}
       <Card className="shadow-lg border-0 bg-white">
       <CardHeader className="bg-slate-800 text-white rounded-t-lg">
-        <CardTitle className="text-center text-lg font-semibold">🛡️ 디지털 계약서 발송</CardTitle>
+        <CardTitle className="text-center text-lg font-semibold">📄 {currentTemplate} 발송</CardTitle>
         <CardDescription className="text-center text-slate-200">
           고객 정보를 입력하시면 디지털 계약서가 즉시 발송됩니다
         </CardDescription>
@@ -139,7 +144,7 @@ export default function ContractForm() {
               ? '📤 발송 중...' 
               : !canSend 
                 ? '📄 발송 한도 초과' 
-                : '📄 계약서 발송하기'
+                : `📄 ${currentTemplate} 발송하기`
             }
           </Button>
 

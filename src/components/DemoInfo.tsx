@@ -8,10 +8,11 @@ import { Clock, FileText, AlertTriangle } from 'lucide-react';
 
 interface DemoInfoProps {
   onRemainingUpdate?: (remaining: number) => void;
+  onTemplateUpdate?: (templateName: string) => void; // 현재 템플릿 이름 전달
   refreshTrigger?: number; // 외부에서 새로고침을 트리거하기 위한 prop
 }
 
-export default function DemoInfo({ onRemainingUpdate, refreshTrigger }: DemoInfoProps) {
+export default function DemoInfo({ onRemainingUpdate, onTemplateUpdate, refreshTrigger }: DemoInfoProps) {
   const [remainingDocs, setRemainingDocs] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +47,15 @@ export default function DemoInfo({ onRemainingUpdate, refreshTrigger }: DemoInfo
         // 부모 컴포넌트에 남은 건수 전달
         if (onRemainingUpdate) {
           onRemainingUpdate(remaining);
+        }
+
+        // 현재 가장 많이 사용된 템플릿 이름 찾기
+        if (data.usage.use_template && data.usage.use_template.length > 0 && onTemplateUpdate) {
+          const mostUsedTemplate = data.usage.use_template.reduce((prev: any, current: any) => 
+            (prev.value > current.value) ? prev : current
+          );
+          console.log('🔍 DemoInfo: 현재 템플릿:', mostUsedTemplate.id);
+          onTemplateUpdate(mostUsedTemplate.id);
         }
       } else {
         console.error('🔍 DemoInfo: API 호출 실패 - data:', data);

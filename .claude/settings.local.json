@@ -44,7 +44,9 @@
       "Bash(git remote add:*)",
       "Bash(git branch:*)",
       "Bash(git push:*)",
-      "mcp__openai-gpt-image-mcp__create-image"
+      "mcp__openai-gpt-image-mcp__create-image",
+      "Bash(sips:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }
